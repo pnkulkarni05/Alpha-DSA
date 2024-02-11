@@ -1,3 +1,4 @@
+
 public class LinkedList{
     public static class Node{
         int data;
@@ -171,6 +172,127 @@ public class LinkedList{
 
     }
 
+
+    //Method to reverse ll
+
+    public void reverseLL(){
+        Node prev=null;
+        Node curr=head;
+        Node next;
+
+        while(curr!=null){
+            next=curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=next;
+        }
+        head=prev;
+
+    }
+
+    //Method to remove nth node from end
+
+    public int removeNthFromEnd(int index){
+        Node temp=head;
+        while(i<size-i-1){
+            temp=temp.next;
+            i++;
+        }
+        int val=temp.next.next.data;
+        temp.next=temp.next.next;
+        size--;
+        return val;
+    }
+
+
+
+    //Slow Fast approach
+
+    public Node findMid(Node head){
+        Node slow=head;
+        Node fast=head;
+        while(fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        return slow;
+    }
+    //Method to check if ll is palindrome or not
+
+    public boolean checkPalindrome(){
+        if(head==null || head.next==null) return true;
+
+        // step 1: Find mid node
+        Node mid = findMid(head);
+
+
+        //step 2: Reverse another half of ll
+        Node prev=null;
+        Node curr=mid;
+        Node next;
+        while(curr!=null){
+            next=curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=next;
+        }
+        Node right=prev;
+        Node left=head;
+
+        //Step 3: check if second part is equal to 1st part
+
+        while(right!=null){
+            if(right.data!=left.data) return false;
+            right=right.next;
+            left=left.next;
+        }
+
+        return true;
+    }
+
+
+    //Method to Check if ll has cycle 
+
+    public static boolean isCyclic(Node head){
+        Node slow=head;
+        Node fast=head;
+        while(fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+            if(fast==slow) return true;
+        }
+        return false;
+    }
+
+
+    //Method to remove cycle from ll
+
+    public static void removeCycle(Node head){
+        Node slow=head;
+        Node fast=head;
+        while(fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+            if(slow==fast){
+                slow=head;
+                Node prev=fast;
+                
+
+                while(slow!=fast){
+                    prev=fast;
+                    slow=slow.next;
+                    fast=fast.next;
+                    
+                }
+                prev.next=null;
+
+            }
+        }
+    }
+
+   
+    
+
     
     public static void main(String args[]){
         LinkedList ll =new LinkedList(); //We are declaring this object of LinkedList class to access the methods inside this class.
@@ -201,6 +323,33 @@ public class LinkedList{
         System.out.println("The key find at index : "+ ll.searchElementIteratively(48));
 
         System.out.println("The key find at index : "+ ll.searchElementRecursively(48, head));
+
+        ll.reverseLL();;
+        ll.printLL();
+
+        ll.removeNthFromEnd(3);
+        ll.printLL();
+
+
+        ll.addFirst(3);
+        ll.addFirst(2);
+        ll.addFirst(1);
+        ll.addFirst(1);
+        ll.addFirst(2);
+        ll.addFirst(3);
+        ll.printLL();
+        System.out.println(ll.checkPalindrome());
+
+        Node head=new Node(1);
+        Node temp=new Node(2);
+        head.next=temp;
+        head.next.next=new Node(3);
+        head.next.next.next=temp;
+        //1->2->3->2
+        
+        System.out.println(isCyclic(head));
+        removeCycle(head);
+        System.out.println(isCyclic(head));
 
     }
 }
